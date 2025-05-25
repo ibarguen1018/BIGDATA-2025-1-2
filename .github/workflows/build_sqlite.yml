@@ -3,11 +3,11 @@ name: Construir base de datos SQLite
 on:
   push:
     paths:
-      - 'static/desersion_escolar.csv'
-      - 'src/**'
+      - 'src/static/desersion_escolar.csv'
+      - 'src/static/convertir_csv_sqlite.py'
       - 'setup.py'
       - '.github/workflows/build_sqlite.yml'
-  workflow_dispatch:  # Permite ejecución manual desde GitHub
+  workflow_dispatch:
 
 jobs:
   build-sqlite:
@@ -27,21 +27,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
-      - name: Ejecutar script de conversión
+      - name: Ejecutar script directamente
         run: |
-          convertir-csv-sqlite
+          python src/static/convertir_csv_sqlite.py
 
       - name: Verificar existencia de archivo .db
         run: |
-          if [ ! -f static/desersion_escolar.db ]; then
-            echo "❌ Archivo static/desersion_escolar.db no encontrado"
+          if [ ! -f src/static/desersion_escolar.db ]; then
+            echo "❌ Archivo src/static/desersion_escolar.db no encontrado"
             exit 1
           fi
-          echo "✅ Archivo static/desersion_escolar.db encontrado"
+          echo "✅ Archivo src/static/desersion_escolar.db encontrado"
 
       - name: Subir base de datos como artefacto
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: desersion_escolar-db
-          path: static/desersion_escolar.db
+          path: src/static/desersion_escolar.db
