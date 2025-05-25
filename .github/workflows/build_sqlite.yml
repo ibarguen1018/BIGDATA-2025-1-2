@@ -7,7 +7,7 @@ on:
       - 'src/**'
       - 'setup.py'
       - '.github/workflows/build_sqlite.yml'
-  workflow_dispatch: 
+  workflow_dispatch:  # Permite ejecución manual desde GitHub
 
 jobs:
   build-sqlite:
@@ -31,8 +31,17 @@ jobs:
         run: |
           convertir-csv-sqlite
 
+      - name: Verificar existencia de archivo .db
+        run: |
+          if [ ! -f static/desersion_escolar.db ]; then
+            echo "❌ Archivo static/desersion_escolar.db no encontrado"
+            exit 1
+          fi
+          echo "✅ Archivo static/desersion_escolar.db encontrado"
+
       - name: Subir base de datos como artefacto
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: desersion_escolar-db
           path: static/desersion_escolar.db
