@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'src/static/desersion_escolar.csv'
-      - 'src/static/convertir_csv_sqlite.py'
+      - 'src/convertir_csv_sqlite.py'
       - 'setup.py'
       - '.github/workflows/build_sqlite.yml'
   workflow_dispatch:
@@ -27,9 +27,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
-      - name: Ejecutar script directamente
+      - name: Ejecutar script
         run: |
-          python src/static/convertir_csv_sqlite.py
+          python src/convertir_csv_sqlite.py
 
       - name: Verificar existencia de archivo .db
         run: |
