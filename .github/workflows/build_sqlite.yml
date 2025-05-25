@@ -1,0 +1,38 @@
+name: Construir base de datos SQLite
+
+on:
+  push:
+    paths:
+      - 'static/desersion_escolar.csv'
+      - 'src/**'
+      - 'setup.py'
+      - '.github/workflows/build_sqlite.yml'
+  workflow_dispatch: 
+
+jobs:
+  build-sqlite:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Ejecutar script de conversión
+        run: |
+          convertir-csv-sqlite
+
+      - name: Subir base de datos como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: desersion_escolar-db
+          path: static/desersion_escolar.db
