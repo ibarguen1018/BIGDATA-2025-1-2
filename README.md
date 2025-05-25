@@ -31,7 +31,7 @@ bd/
 1. Clona el repositorio:
 
 ```bash
-git clone 
+git clone https://github.com/ibarguen1018/BIGDATA-2025-1-2.git
 ````
 
 2. Crea y activa un entorno virtual:
